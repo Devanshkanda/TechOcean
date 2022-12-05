@@ -1,0 +1,44 @@
+body {
+    background-color: white;
+}
+
+.navbar-height {
+    height: 70px;
+    /* background-color: black; */
+}
+
+.nav-user {
+    border: 2px solid greenyellow;
+    border-radius: 30px;
+}
+
+.welcome-banner {
+    text-align: center;
+    border-radius: 20px;
+    background-color: white;
+}
+
+.about_gradient {
+    text-align: center;
+    height: 200px;
+    margin-top: 40px;
+    border: 2px solid black;
+}
+
+.about-head {
+    text-align: center;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: auto;
+}
+
+.contact{
+    height: 100px;
+}
+
+input {
+    border: 2px solid black;
+}
