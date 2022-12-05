@@ -19,24 +19,19 @@ def about(request):
     return render(request,'home/about.html')
 
 def contact(request):
+
     if request.method=="POST":
         name=request.POST['name']
         email=request.POST['email']
+        phone=request.POST['phone']
         issue =request.POST['issue']
-        phone = request.POST['phone']
-        if len(name)<2 :
-            messages.warning(request, "Please Enter correct Name")
-        if len(email)<5 :
-            messages.warning(request, "Please Enter correct Email")
-        if len(issue)<50 :
-            messages.warning(request, "Please Write atleast 50 words")
-        if len(phone)<10 or len(phone)>10:
-            messages.warning(request, "Please Enter correct Phone Number")
+        if len(name)<2 or len(email)<3 or len(phone)<10 or len(phone)>10 or len(issue)<10:
+            messages.warning(request, "Please fill the form correctly")
         else:
-            contact=Contact(name=name, email=email, issue=issue,phone=phone)
+            contact=Contact(name=name, email=email, phone=phone, issue=issue)
             contact.save()
             messages.success(request, "Your message has been successfully sent")
-    return render(request,'home/contact.html')
+    return render(request, "home/contact.html")
 
 def search(request):
     query=request.GET.get('query')
