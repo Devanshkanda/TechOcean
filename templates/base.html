@@ -16,10 +16,14 @@
   <!-- Icons link -->
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans&family=Sacramento&display=swap"
+    rel="stylesheet">
+
   <title>TechOcean | {% block title %}{% endblock title %}</title>
 </head>
 
-<body>
+<body style="background-color: white;">
   <nav class="navbar-height navbar navbar-expand-lg navbar-dark" style="background-color: #0a0a0a;">
     <a class="navbar-brand" href="/">TechOcean</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -50,26 +54,29 @@
       </form>
       {% if user.is_authenticated %}
       <ul class="nav-user navbar-nav mr-2">
-      <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href='#' id="navbarDropdown" role="button" data-toggle="dropdown"> Welcome {{request.user}}</a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/logout">Logout</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href='#' id="navbarDropdown" role="button" data-toggle="dropdown"> Welcome
+            {{request.user}}</a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/logout">Logout</a>
 
-        </div>
-      </li>
+          </div>
+        </li>
       </ul>
-      </div>
-{% else %}
-  <!-- Button to  trigger Login modal -->
-<button type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#loginModal">
-Login
-</button>
- <!-- Button to  trigger sign modal -->
-<button type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#signupModal">
-SignUp
-</button>
-{% endif %}
-    
+    </div>
+    {% else %}
+    <!-- Button to  trigger Login modal -->
+    <button style="border-radius: 15px;" type="button" class="btn btn-success mr-2" data-toggle="modal"
+      data-target="#loginModal">
+      Login
+    </button>
+    <!-- Button to  trigger sign modal -->
+    <button style="border-radius: 15px;" type="button" class="btn btn-success mr-2" data-toggle="modal"
+      data-target="#signupModal">
+      SignUp
+    </button>
+    {% endif %}
+
     </div>
   </nav>
   {% for message in messages %}
@@ -155,10 +162,10 @@ SignUp
           </button>
         </div>
         <div class="modal-body">
-          <form action="/login" method="POST"> 
+          <form action="/login" method="POST">
             {% csrf_token %}
             <div class="form-group">
-              <label for="username">Username</label>
+              <label style="text-align: left;" for="username">Username</label>
               <input type="text" class="form-control" id="loginusername" name="loginusername"
                 placeholder="Enter your username " required>
             </div>
@@ -167,9 +174,14 @@ SignUp
               <input type="password" class="form-control" id="loginpassword" name="loginpassword"
                 placeholder="Enter your password " required>
             </div>
-            
-              <button type="submit" class="btn btn-primary">Submit</button>
+
+            <button style="text-align: center;" type="submit" class="btn btn-primary">Submit</button>
           </form>
+          <p style="text-align: center; margin-bottom: 0px; margin-top: 10px;">Don't hava an account?</p>
+          <button style="margin-left: 35%;" class="btn btn-sm btn-primary" type="button" data-toggle="modal"
+            data-target="#signupModal">
+            Click here to signup.
+          </button>
         </div>
         <div class="modal-footer">
         </div>
