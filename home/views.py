@@ -94,7 +94,7 @@ def handeLogin(request):
             messages.success(request, "Successfully Logged In")
             return redirect("home")
         else:
-            messages.warning(request, "Invalid credentials! Please try again")
+            messages.error(request, "Invalid credentials! Please try again")
             return redirect("home")
 
     return HttpResponse("404- Not found")

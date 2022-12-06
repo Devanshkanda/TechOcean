@@ -25,6 +25,7 @@ def blogPost(request, slug):
 
     context={'post':post, 'comments': comments, 'user': request.user, 'replyDict': replyDict}
     return render(request, "blog/blogPost.html", context)
+    
 def postComment(request):
     if request.method == "POST":
         comment=request.POST.get('comment')
