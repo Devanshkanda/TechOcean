@@ -1,5 +1,3 @@
-from django.shortcuts import render
-
 # Create your views here.
 from django.shortcuts import render, HttpResponse,redirect
 from home.models import Contact
@@ -25,12 +23,13 @@ def contact(request):
         email=request.POST['email']
         phone=request.POST['phone']
         issue =request.POST['issue']
-        if len(name)<2 or len(email)<3 or len(phone)<10 or len(phone)>10 or len(issue)<10:
-            messages.warning(request, "Please fill the form correctly")
-        else:
-            contact=Contact(name=name, email=email, phone=phone, issue=issue)
-            contact.save()
-            messages.success(request, "Your message has been successfully sent")
+        if len(phone)<10 or len(phone)>10:
+            messages.warning(request, " Please enter a valid Phone Number")
+        
+
+        contact=Contact(name=name, email=email, phone=phone, issue=issue)
+        contact.save()
+        messages.success(request, "Your message has been successfully sent")
     return render(request, "home/contact.html")
 
 def search(request):
@@ -40,12 +39,16 @@ def search(request):
     else:
         allPostsTitle= Post.objects.filter(title__icontains=query)
         allPostsAuthor= Post.objects.filter(author__icontains=query)
-        allPostsContent =Post.objects.filter(content__icontains=query)
-        allPosts=  allPostsTitle.union(allPostsContent, allPostsAuthor)
+        # allPostsContent =Post.objects.filter(content__icontains=query)
+        # allPosts=  allPostsTitle.union( allPostsContent ,allPostsAuthor)
+        allPosts=  allPostsTitle.union( allPostsAuthor)
     if allPosts.count()==0:
         messages.warning(request, "No search results found. Please refine your query.")
     params={'allPosts': allPosts, 'query': query}
     return render(request, 'home/search.html', params)
+
+
+
 
 #authentication api's
 
@@ -60,17 +63,26 @@ def handleSignUp(request):
         pass2=request.POST['pass2']
 
         # check for errorneous input
-        if len(username)<10:
+        if len(username)<5:
             messages.warning(request, " Your user name must not be under 10 characters")
             return redirect('home')
 
         if not username.isalnum():
             messages.warning(request, " User name should only contain letters and numbers")
             return redirect('home')
+
         if (pass1!= pass2):
              messages.warning(request, " Passwords do not match")
              return redirect('home')
-        
+
+        if User.objects.filter(username = username).first():
+            messages.warning(request, "This Username is already taken")
+            return redirect('home')
+
+        if User.objects.filter(email = email).first():
+            messages.warning(request, "This Email is already taken")
+            return redirect('home')
+
         # Create the user
         myuser = User.objects.create_user(username, email, pass1)
         myuser.first_name= fname
