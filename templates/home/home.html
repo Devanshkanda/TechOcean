@@ -17,23 +17,23 @@
   <h2 class=" font-italic">Some Famous blogs of Latika :</h2>
   {% for post in allPosts %}
   {% if post.author == 'Latika'%}
-        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 my-4 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-                <div style="color: #C060A1; font-size: 20px;">
-                    <strong class="d-inline-block mb-2">Article  by {{ post.author }}</strong>
-                </div>
-                <div style="margin-left: 60px;">
-                    <h3 class="mb-0"><a class="text-dark" href="/blog/{{post.slug}}">{{ post.title }} </a> </h3>
-                    <div class="mb-1 text-muted">{{ post.datetime }}</div>
-                    <p class="card-text mb-auto"> <div class="preview">{{ post.content | safe | truncatechars:300}} </div></p>
-                    <div class="my-2">
-                        <a style="background-color: #A4BE7B;" href="/blog/{{post.slug}}" role="button" class="btn ">Continue reading</a>
-                    </div>
-                </div>
-
-            </div>
-
+  <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 my-4 position-relative">
+    <div class="col p-4 d-flex flex-column position-static">
+        <div style="color: #C060A1; font-size: 20px;">
+            <strong class="d-inline-block mb-2">Article  by {{ post.author }}</strong>
         </div>
+        <div style="margin-left: 60px;">
+            <h3 class="mb-0"><a class="text-dark" href="/blog/{{post.slug}}">{{ post.title }} </a> </h3>
+            <div class="mb-1 text-muted">{{ post.datetime }}</div>
+            <p class="card-text mb-auto"> <div class="preview">{{ post.content | safe | truncatechars:200}} </div></p>
+            <div class="my-2">
+                <a style="background-color: #A4BE7B;" href="/blog/{{post.slug}}" role="button" class="btn">Continue reading</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
   {% endif %}
   {% endfor %}

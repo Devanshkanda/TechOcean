@@ -26,15 +26,15 @@ def contact(request):
         if len(phone)<10 or len(phone)>10:
             messages.warning(request, " Please enter a valid Phone Number")
         
-
-        contact=Contact(name=name, email=email, phone=phone, issue=issue)
-        contact.save()
-        messages.success(request, "Your message has been successfully sent")
+        else:
+            contact=Contact(name=name, email=email, phone=phone, issue=issue)
+            contact.save()
+            messages.success(request, "Your message has been successfully sent")
     return render(request, "home/contact.html")
 
 def search(request):
     query=request.GET.get('query')
-    if len(query)>78:
+    if len(query)>20:
         allPosts=Post.objects.none()
     else:
         allPostsTitle= Post.objects.filter(title__icontains=query)
@@ -106,7 +106,7 @@ def handeLogin(request):
             messages.success(request, "Successfully Logged In")
             return redirect("home")
         else:
-            messages.error(request, "Invalid credentials! Please try again")
+            messages.warning(request, "Invalid credentials! Please try again")
             return redirect("home")
 
     return HttpResponse("404- Not found")

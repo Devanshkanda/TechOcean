@@ -6,7 +6,7 @@ class Contact(models.Model):
      name= models.CharField(max_length=30)
      email= models.EmailField(max_length=50)
      issue= models.TextField(max_length=200)
-     phone= models.CharField(max_length = 10)
+     phone= models.IntegerField(max_length = 10)
      timeStamp=models.DateTimeField(auto_now_add=True, blank=True)
 
      def __str__(self):
