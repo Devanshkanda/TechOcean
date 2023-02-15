@@ -4,13 +4,13 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from blog.templatetags import extras
 # Create your views here.
-def blogHome(request): 
+def blogHome(request):
     allPosts= Post.objects.all()
     context={'allPosts': allPosts}
-    return render(request, "blog/blogHome.html", context)
+    return render(request, "blog/bloghome.html", context)
     
-def blogPost(request, slug): 
-    post=Post.objects.filter(slug=slug).first()
+def blogPost(request, slug):
+    post=Post.objects.filter(slug=str(slug)).first()
     post.views= post.views +1
     post.save()
     
@@ -24,15 +24,15 @@ def blogPost(request, slug):
             replyDict[reply.parent.sno].append(reply)
 
     context={'post':post, 'comments': comments, 'user': request.user, 'replyDict': replyDict}
-    return render(request, "blog/blogPost.html", context)
+    return render(request, "blog/blogpost.html", context)
     
 def postComment(request):
     if request.method == "POST":
-        comment=request.POST.get('comment')
+        comment=str(request.POST.get('comment'))
         user=request.user
-        postSno =request.POST.get('postSno')
+        postSno = str(request.POST.get('postSno'))
         post= Post.objects.get(sno=postSno)
-        parentSno= request.POST.get('parentSno')
+        parentSno= str(request.POST.get('parentSno'))
         if parentSno=="":
             comment=BlogComment(comment= comment, user=user, post=post)
             comment.save()

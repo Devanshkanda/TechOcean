@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth  import authenticate,  login, logout
 from blog.models import Post
+import hashlib as hashh
 
 # html pages
 def home(request):
@@ -17,15 +18,13 @@ def about(request):
     return render(request,'home/about.html')
 
 def contact(request):
-
     if request.method=="POST":
-        name=request.POST['name']
-        email=request.POST['email']
-        phone=request.POST['phone']
-        issue =request.POST['issue']
-        if len(phone)<10 or len(phone)>10:
+        name=str(request.POST['name'])
+        email=str(request.POST['email'])
+        phone=str(request.POST['phone'])
+        issue =str(request.POST['issue'])
+        if len(phone)<10 or len(phone)>10 or len(phone)!= 10:
             messages.warning(request, " Please enter a valid Phone Number")
-        
         else:
             contact=Contact(name=name, email=email, phone=phone, issue=issue)
             contact.save()
@@ -33,12 +32,12 @@ def contact(request):
     return render(request, "home/contact.html")
 
 def search(request):
-    query=request.GET.get('query')
+    query=str(request.GET.get('query'))
     if len(query)>20:
         allPosts=Post.objects.none()
     else:
-        allPostsTitle= Post.objects.filter(title__icontains=query)
-        allPostsAuthor= Post.objects.filter(author__icontains=query)
+        allPostsTitle= Post.objects.filter(title__icontains=str(query))
+        allPostsAuthor= Post.objects.filter(author__icontains=str(query))
         # allPostsContent =Post.objects.filter(content__icontains=query)
         # allPosts=  allPostsTitle.union( allPostsContent ,allPostsAuthor)
         allPosts=  allPostsTitle.union( allPostsAuthor)
@@ -55,12 +54,12 @@ def search(request):
 def handleSignUp(request):
     if request.method=="POST":
         # Get the post parameters
-        username=request.POST['username']
-        email=request.POST['email']
-        fname=request.POST['fname']
-        lname=request.POST['lname']
-        pass1=request.POST['pass1']
-        pass2=request.POST['pass2']
+        username=str(request.POST['username'])
+        email=str(request.POST['email'])
+        fname=str(request.POST['fname'])
+        lname=str(request.POST['lname'])
+        pass1=str(request.POST['pass1'])
+        pass2=str(request.POST['pass2'])
 
         # check for errorneous input
         if len(username)<5:
@@ -83,8 +82,11 @@ def handleSignUp(request):
             messages.warning(request, "This Email is already taken")
             return redirect('home')
 
+        # converting password into hashed digest
+        hashed_pass = hashh.md5(pass1.encode()).hexdigest()
+
         # Create the user
-        myuser = User.objects.create_user(username, email, pass1)
+        myuser = User.objects.create_user(username, email, hashed_pass)
         myuser.first_name= fname
         myuser.last_name= lname
         myuser.save()
@@ -100,7 +102,12 @@ def handeLogin(request):
         loginusername=request.POST['loginusername']
         loginpassword=request.POST['loginpassword']
 
-        user=authenticate(username= loginusername, password= loginpassword)
+        # converting password into hashed digest
+        hashed_pass = hashh.md5(loginpassword.encode()).hexdigest()
+
+        # authenticating the user
+        user=authenticate(username= loginusername, password= hashed_pass)
+        print(user)
         if user is not None:
             login(request, user)
             messages.success(request, "Successfully Logged In")
@@ -116,6 +123,6 @@ def handeLogin(request):
 
 def handelLogout(request):
     logout(request)
-    messages.success(request, "Successfully logged out")
+    messages.success(request," Successfully logged out")
     return redirect('home')
 
