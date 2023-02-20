@@ -84,7 +84,7 @@ def handleSignUp(request):
 
         # adding salt to the password
         salt = "this@#is&a3#salt" # random complex string
-        adding_salt_To_password = loginpassword+salt 
+        adding_salt_To_password = pass1+salt 
 
         # converting password into hashed digest
         hashed_pass = hashh.md5(adding_salt_To_password.encode()).hexdigest()
