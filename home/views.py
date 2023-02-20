@@ -82,8 +82,12 @@ def handleSignUp(request):
             messages.warning(request, "This Email is already taken")
             return redirect('home')
 
+        # adding salt to the password
+        salt = "this@#is&a3#salt" # random complex string
+        adding_salt_To_password = loginpassword+salt 
+
         # converting password into hashed digest
-        hashed_pass = hashh.md5(pass1.encode()).hexdigest()
+        hashed_pass = hashh.md5(adding_salt_To_password.encode()).hexdigest()
 
         # Create the user
         myuser = User.objects.create_user(username, email, hashed_pass)
@@ -99,11 +103,15 @@ def handleSignUp(request):
 def handeLogin(request):
     if request.method=="POST":
         # Get the post parameters
-        loginusername=request.POST['loginusername']
-        loginpassword=request.POST['loginpassword']
+        loginusername=str(request.POST['loginusername'])
+        loginpassword=str(request.POST['loginpassword'])
 
+        # adding salt to the password
+        salt = "this@#is&a3#salt" # random complex string
+        adding_salt_To_password = loginpassword+salt
+        
         # converting password into hashed digest
-        hashed_pass = hashh.md5(loginpassword.encode()).hexdigest()
+        hashed_pass = hashh.md5(adding_salt_To_password.encode()).hexdigest()
 
         # authenticating the user
         user=authenticate(username= loginusername, password= hashed_pass)
